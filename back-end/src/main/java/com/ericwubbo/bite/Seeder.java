@@ -30,9 +30,12 @@ public class Seeder implements CommandLineRunner {
 
     @Override
     public void run(String... args) {
-//        seedTags();
-//        seedItems();
-//        seedBasket();
+        if (itemRepository.count() == 0) {
+            seedTags();
+            seedItems();
+            seedBasket();
+            System.out.println("Seeded database!");
+        } else System.out.println("Database was already seeded...");
     }
 
     private void seedTags() {
