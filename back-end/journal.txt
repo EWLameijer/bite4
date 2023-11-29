@@ -1,0 +1,46 @@
+Wat moet nog gedaan worden?
+
+20230708
+    9:42 ronde 1: experimenteer met basket
+    ? ronde 2: experimenteer met Id...
+    11:44 ronde 3 Laat Id
+
+ 12 u: ronde lees
+    15u ronde 2 lees
+
+ Bronnen:
+    Best? Spring in action
+    Daarna? Baeldung
+    Daarna? Joris' pres
+
+Could not determine recommended JdbcType for `com.ericwubbo.bite.basketitem.BasketItem`
+
+
+
+1 exp, 1 studeer, dan 1 exp/2studeer als geen vooruitgang!
+
+Problemen:
+Could not determine recommended JdbcType for `com.ericwubbo.bite.basketitem.BasketItem`
+Voor mij is het logisch
+
+Basket =
+    basketId [PK]
+    dateTime
+
+BasketItem =
+    Id [PK]
+    basket (basketId=[FK]
+    item (itemId=[FK]
+
+Item
+    Id [PK]
+    name
+    price
+
+
+
+ooit uit te zoeken
+Composite Id: https://www.baeldung.com/jpa-composite-primary-keys
+Set/List/Collection: hoe doe je dat in Springf
+
+
