@@ -6,11 +6,10 @@ import com.ericwubbo.bite.item.Item;
 import com.ericwubbo.bite.item.ItemRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
-import java.util.Optional;
+import java.util.Collection;
 import java.util.Set;
 
 @RestController
@@ -30,14 +29,20 @@ public class BasketController {
     }
 
     record BasketItemDto(long itemId, int count) {
+        public static BasketItemDto from(BasketItem basketItem) {
+            return new BasketItemDto(basketItem.getId(), basketItem.getCount());
+        }
     }
 
-    record BasketDto(BasketItemDto[] basketItems) {
+    record BasketDto(Long basketId, Collection<BasketItemDto> basketItems) {
+        public static BasketDto from(Basket basket) {
+            return new BasketDto(basket.getId(), basket.getBasketItems().stream().map(BasketItemDto::from).toList());
+        }
     }
 
     @PostMapping
     @Transactional
-    public Basket post(@RequestBody BasketDto basketDto) {
+    public BasketDto post(@RequestBody BasketDto basketDto) {
         var basket = basketRepository.save(new Basket());
         for (BasketItemDto basketItemDto : basketDto.basketItems()) {
             Item item = itemRepository.findById(basketItemDto.itemId).orElseThrow();
@@ -45,7 +50,7 @@ public class BasketController {
             basketItemRepository.save(basketItem);
             basket.addBasketItem(basketItem);
         }
-        return basket;
+        return BasketDto.from(basket);
     }
 
 }

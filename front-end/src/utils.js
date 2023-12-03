@@ -20,6 +20,8 @@ const formatAsPrice = priceInCents => new Intl.NumberFormat("nl-NL", { style: "c
 // from https://stackoverflow.com/questions/34698905/how-can-i-clone-a-javascript-object-except-for-one-key
 const omit = (prop, { [prop]: _, ...rest }) => rest;
 
-const toInternalCentPrices = items => items.map(item => ({ ...item, price: item.price * 100 }))
+const toInternalPrice = item => ({ ...item, price: item.price * 100 })
 
-export { formatAsPrice, omit, postData, toInternalCentPrices };
+const toInternalCentPrices = items => items.map(item => toInternalPrice(item))
+
+export { formatAsPrice, omit, postData, toInternalPrice, toInternalCentPrices };

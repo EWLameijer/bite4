@@ -1,18 +1,14 @@
 import { useState } from 'react';
-import { post } from './itemService';
 import PropTypes from 'prop-types';
 
-const AddItem = props => {
+const AddItem = ({ addItem }) => {
     const defaultState = { name: "", price: "" }
     const [item, setItem] = useState({ ...defaultState });
 
     const submit = event => {
         event.preventDefault();
-        console.log(item);
-        post(item).then(() => {
-            setItem({ ...defaultState });
-            props.reloadItems();
-        })
+        addItem(item);
+        setItem({ ...defaultState });
     }
 
     const change = event => {
@@ -30,7 +26,7 @@ const AddItem = props => {
 }
 
 AddItem.propTypes = {
-    reloadItems: PropTypes.func.isRequired
+    addItem: PropTypes.func.isRequired
 }
 
 export default AddItem;
