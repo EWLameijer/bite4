@@ -1,6 +1,6 @@
 package com.ericwubbo.bite.item;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -8,17 +8,16 @@ import java.util.Optional;
 
 @RestController
 @CrossOrigin
+@RequiredArgsConstructor
 @RequestMapping("api/v1/items")
 public class ItemController {
-    @Autowired
-    private ItemRepository itemRepository;
+    private final ItemRepository itemRepository;
 
     @GetMapping
     public List<Item> getItems() {
         return itemRepository.findAll();
     }
 
-    // from https://www.javaguides.net/2021/08/spring-boot-postgresql-crud-example.html
     @PostMapping
     public Item postItem(@RequestBody Item item) {
         return itemRepository.save(item);
@@ -30,12 +29,6 @@ public class ItemController {
     }
 
     record ItemDto(String name, String price) {
-    }
-
-    @PutMapping("{id}")
-    public void replaceItem(@PathVariable long id, @RequestBody ItemDto itemDto) {
-        var newItem = new Item(id, itemDto.name, itemDto.price);
-        itemRepository.save(newItem);
     }
 
     @GetMapping("{id}")
