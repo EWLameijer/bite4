@@ -8,6 +8,7 @@ import com.ericwubbo.bite.item.Item;
 import com.ericwubbo.bite.item.ItemRepository;
 import com.ericwubbo.bite.tag.Tag;
 import com.ericwubbo.bite.tag.TagRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
@@ -15,18 +16,15 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 @Component
+@RequiredArgsConstructor
 public class Seeder implements CommandLineRunner {
-    @Autowired
-    private ItemRepository itemRepository;
+    private final ItemRepository itemRepository;
 
-    @Autowired
-    private BasketRepository basketRepository;
+    private final BasketRepository basketRepository;
 
-    @Autowired
-    private BasketItemRepository basketItemRepository;
+    private final BasketItemRepository basketItemRepository;
 
-    @Autowired
-    private TagRepository tagRepository;
+    private final TagRepository tagRepository;
 
     @Override
     public void run(String... args) {
@@ -42,8 +40,7 @@ public class Seeder implements CommandLineRunner {
         long count = tagRepository.count();
         if (count == 0) {
             System.out.println("Seeding tags");
-            tagRepository.save(new Tag("fruit"));
-            tagRepository.save(new Tag("biological"));
+            tagRepository.saveAll(List.of(new Tag("fruit"), new Tag("biological")));
             count = tagRepository.count();
         }
         System.out.println(count + " tags in the database.");
@@ -53,16 +50,12 @@ public class Seeder implements CommandLineRunner {
         long count = basketRepository.count();
         if (count == 0) {
             System.out.println("Seeding basket");
-            Item apples = itemRepository.findByName("apples").stream().findFirst().get();
-            Item pears = itemRepository.findByName("prunes").stream().findFirst().get();
+            Item apples = itemRepository.findByName("apples").orElseThrow();
+            Item pears = itemRepository.findByName("prunes").orElseThrow();
             var basket = new Basket();
-            BasketItem applesOrder = new BasketItem(apples, basket, 1);
-            BasketItem pearsOrder = new BasketItem(pears, basket, 2);
-            basketRepository.save(basket); // does not save the basketitems without the @OneToMany
-            basketItemRepository.save(applesOrder);
-            basketItemRepository.save(pearsOrder);
+            basketRepository.save(basket);
+            basketItemRepository.saveAll(List.of(new BasketItem(apples, basket, 1), new BasketItem(pears, basket, 2)));
             count = basketRepository.count();
-            // even does not save the basketitems WITH the @OneToMamy
         }
         System.out.println(count + " baskets in the database.");
     }
@@ -71,16 +64,13 @@ public class Seeder implements CommandLineRunner {
         long count = itemRepository.count();
         if (count == 0) {
             System.out.println("Seeding items");
-            var fruitTag = tagRepository.findByName("fruit").get();
-            var biologicalTag = tagRepository.findByName("biological").get();
-            List<Item> items = List.of(
+            var fruitTag = tagRepository.findByName("fruit").orElseThrow();
+            var biologicalTag = tagRepository.findByName("biological").orElseThrow();
+            itemRepository.saveAll(List.of(
                     new Item("apples", "2.25", fruitTag, biologicalTag),
                     new Item("bananas", "3.79", fruitTag),
                     new Item("pears", "4.50", fruitTag),
-                    new Item("prunes", "1.20", fruitTag, biologicalTag));
-            for (Item item : items) {
-                itemRepository.save(item);
-            }
+                    new Item("prunes", "1.20", fruitTag, biologicalTag)));
             count = itemRepository.count();
         }
         System.out.println(count + " items in the database.");

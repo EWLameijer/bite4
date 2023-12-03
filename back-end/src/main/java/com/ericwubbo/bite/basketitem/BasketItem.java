@@ -3,8 +3,14 @@ package com.ericwubbo.bite.basketitem;
 import com.ericwubbo.bite.item.Item;
 import com.ericwubbo.bite.basket.Basket;
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
+@Getter
+@Setter
+@NoArgsConstructor
 public class BasketItem {
     @Id // Ideally composite key out of itemId and basketId
     @GeneratedValue
@@ -24,32 +30,5 @@ public class BasketItem {
         this.item = item;
         this.basket = basket;
         this.count = count;
-    }
-
-    BasketItem() {}
-
-    public Item getItem() {
-        return item;
-    }
-
-    public int getCount() {
-        return count;
-    }
-
-    // needed to read data from a RequestBody
-    public Long getId() {
-        return id;
-    }
-
-    public void setBasket(Basket basket) {
-        this.basket = basket;
-    }
-
-    public void setItem(Item item) {
-        this.item = item;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 }
