@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { deleteItemById, getItems, itemPath } from './itemService';
+import { getItems, itemPath } from './itemService';
 import AddItem from './AddItem';
 import { formatAsPrice, toInternalCentPrices, toInternalPrice } from './utils';
 import { Link } from 'react-router-dom'
@@ -17,18 +17,13 @@ const Manage = () => {
         })
     }
 
-    const deleteItem = id => deleteItemById(id).then(
+    const deleteItem = id => axios.delete(`${itemPath}/${id}`).then(
         _ => setItems(items.filter(item => item.id != id))
-    );
+    ).catch(() => alert(`Problems deleting ${items.find(item => item.id === id).name}!`));
 
     useEffect(() => {
         getItems().then(response => response.json())
-            .then(actualData => {
-                console.table(actualData);
-                const result = toInternalCentPrices(actualData)
-                console.table(result)
-                setItems(result)
-            })
+            .then(actualData => setItems(toInternalCentPrices(actualData)))
             .catch(err => console.log(`An error has occurred: ${err.message}.`))
     }, []);
 
