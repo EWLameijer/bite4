@@ -6,6 +6,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
 import lombok.Getter;
+import lombok.Setter;
 import lombok.ToString;
 
 import java.math.BigDecimal;
@@ -25,6 +26,9 @@ public class Item {
 
     @ManyToMany
     private Set<Tag> tags;
+
+    @Setter
+    private boolean hasBeenDeleted = false;
 
     private Item() {
     }

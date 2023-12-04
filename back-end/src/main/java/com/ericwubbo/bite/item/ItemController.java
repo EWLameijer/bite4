@@ -25,7 +25,9 @@ public class ItemController {
 
     @DeleteMapping("{id}")
     public void deleteItem(@PathVariable("id") long id) {
-        itemRepository.deleteById(id);
+        var item = itemRepository.findById(id).orElseThrow();
+        item.setHasBeenDeleted(true);
+        itemRepository.save(item);
     }
 
     record ItemDto(String name, String price) {

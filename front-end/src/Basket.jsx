@@ -7,15 +7,13 @@ const Basket = ({ items, basket }) => {
     const totalPrice = orders.reduce((runningTotal, currentItem) => runningTotal + currentItem.linePrice, 0);
 
     return <>
-        Your basket{Object.keys(basket).length === 0 ? " is empty" :
-            (<>
-                :
-                <ul>
-                    {orderLines.map(orderLine => <li key={orderLine}>{orderLine}</li>)}
-                </ul>
-                <p>TOTAL: {formatAsPrice(totalPrice)}</p>
-            </>
-            )
+        Your basket{Object.keys(basket).length === 0 ? " is empty" : <>
+            :
+            <ul>
+                {orderLines.map(orderLine => <li key={orderLine}>{orderLine}</li>)}
+            </ul>
+            <p>TOTAL: {formatAsPrice(totalPrice)}</p>
+        </>
         }
     </>
 }
