@@ -3,6 +3,7 @@ package com.ericwubbo.bite.item;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
@@ -28,9 +29,6 @@ public class ItemController {
         var item = itemRepository.findById(id).orElseThrow();
         item.setHasBeenDeleted(true);
         itemRepository.save(item);
-    }
-
-    record ItemDto(String name, String price) {
     }
 
     @GetMapping("{id}")

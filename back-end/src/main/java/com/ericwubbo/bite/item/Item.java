@@ -1,6 +1,7 @@
 package com.ericwubbo.bite.item;
 
 import com.ericwubbo.bite.tag.Tag;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
@@ -25,6 +26,7 @@ public class Item {
     private BigDecimal price;
 
     @ManyToMany
+    @JsonBackReference
     private Set<Tag> tags;
 
     @Setter
