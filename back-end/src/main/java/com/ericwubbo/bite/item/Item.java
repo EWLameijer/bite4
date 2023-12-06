@@ -26,7 +26,6 @@ public class Item {
     private BigDecimal price;
 
     @ManyToMany
-    @JsonBackReference
     private Set<Tag> tags;
 
     @Setter

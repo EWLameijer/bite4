@@ -1,6 +1,7 @@
 package com.ericwubbo.bite.tag;
 
 import com.ericwubbo.bite.item.Item;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -22,7 +23,7 @@ public class Tag {
     private String name;
 
     @ManyToMany(mappedBy = "tags")
-    @JsonManagedReference
+    @JsonIgnore
     private Set<Item> items;
 
     public Tag(String name) {
